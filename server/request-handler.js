@@ -5,22 +5,48 @@
  * this file and include it in basic-server.js so that it actually works.
  * *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html. */
 
-var handleRequest = function(request, response) {
+exports.handler = function(request, response) {
   /* the 'request' argument comes from nodes http module. It includes info about the
   request - such as what URL the browser is requesting. */
 
   /* Documentation for both request and response can be found at
    * http://nodemanual.org/0.8.14/nodejs_ref_guide/http.html */
+  // console.log(request);
+  //
+  // case for get/post
+  // get -> statuscode 200, default respond with 100 newest messages
+  //        format: {username: '', text: '', createdAt: date, ID: ''}
+  //        flags: order, limit, roomname
+  //
+  // post -> we get {username:'', text:''}
+  //         we store: user;name, text, createdat, objectID
+  //         response: head: statuscode 201, body: {objectID: ''}
 
   console.log("Serving request type " + request.method + " for url " + request.url);
-
-  var statusCode = 200;
-
   /* Without this line, this server wouldn't work. See the note
    * below about CORS. */
   var headers = defaultCorsHeaders;
 
-  headers['Content-Type'] = "text/plain";
+  //all data is being sent back in JSON format
+  headers['Content-Type'] = "application/json";
+
+
+  var statusCode;
+
+  if(request.method === 'GET') {
+    statusCode = 200;
+
+
+
+
+  } else if (request.method === 'POST') {
+    statusCode = 201;
+
+
+
+
+  }
+
 
   /* .writeHead() tells our server what HTTP status code to send back */
   response.writeHead(statusCode, headers);
@@ -29,7 +55,7 @@ var handleRequest = function(request, response) {
    * anything back to the client until you do. The string you pass to
    * response.end() will be the body of the response - i.e. what shows
    * up in the browser.*/
-  response.end("Hello, World!");
+  response.end(JSON.stringify({results:[]}));
 };
 
 /* These headers will allow Cross-Origin Resource Sharing (CORS).
