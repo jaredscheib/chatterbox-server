@@ -22,29 +22,44 @@ exports.handler = function(request, response) {
   //         we store: user;name, text, createdat, objectID
   //         response: head: statuscode 201, body: {objectID: ''}
 
-  console.log("Serving request type " + request.method + " for url " + request.url);
+  console.log('Serving request type ' + request.method + ' for url ' + request.url);
   /* Without this line, this server wouldn't work. See the note
    * below about CORS. */
   var headers = defaultCorsHeaders;
-
   //all data is being sent back in JSON format
-  headers['Content-Type'] = "application/json";
+  headers['Content-Type'] = 'application/json';
 
 
   var statusCode;
+  var serverResponse = {};
 
-  if(request.method === 'GET') {
+  if (request.method === 'OPTIONS') {
+    statusCode = 200;
+
+
+    serverResponse = {
+      POST: {
+        description: 'post a new message',
+        parameters: {
+          order: 'string',
+          limit: 'number',
+          username: 'string'
+        }
+      },
+      GET: {
+        description: 'get chat messages'
+      }
+    };
+
+  } else if (request.method === 'GET') {
     statusCode = 200;
 
 
 
 
-  } else if (request.method === 'POST') {
+  } else if(request.method === 'POST') {
     statusCode = 201;
-
-
-
-
+    console.log('GET');
   }
 
 
@@ -55,7 +70,7 @@ exports.handler = function(request, response) {
    * anything back to the client until you do. The string you pass to
    * response.end() will be the body of the response - i.e. what shows
    * up in the browser.*/
-  response.end(JSON.stringify({results:[]}));
+  response.end(JSON.stringify(serverResponse));
 };
 
 /* These headers will allow Cross-Origin Resource Sharing (CORS).
@@ -64,8 +79,8 @@ exports.handler = function(request, response) {
  * like file://your/chat/client/index.html, which is considered a
  * different domain.) */
 var defaultCorsHeaders = {
-  "access-control-allow-origin": "*",
-  "access-control-allow-methods": "GET, POST, PUT, DELETE, OPTIONS",
-  "access-control-allow-headers": "content-type, accept",
-  "access-control-max-age": 10 // Seconds.
+  'access-control-allow-origin': '*',
+  'access-control-allow-methods': 'GET, POST, PUT, DELETE, OPTIONS',
+  'access-control-allow-headers': 'content-type, accept',
+  'access-control-max-age': 10 // Seconds.
 };

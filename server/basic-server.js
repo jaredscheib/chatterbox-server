@@ -4,7 +4,7 @@ var handler = require('./request-handler').handler;
 var database = require('./data').Data;
 
 //create database instance
-var data = new database();
+// var data = new database();
 
 /* Every server needs to listen on a port with a unique number. The
  * standard port for HTTP servers is port 80, but that port is

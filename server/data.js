@@ -2,7 +2,7 @@
 var Data = function(paramsHash){
   this.roomname = paramsHash.roomname || 'lobby';
 
-  this._storage = {};
+  this._storage = [];
     // store messages with key of createdAt
 };
 
@@ -15,7 +15,13 @@ Data.prototype.add = function(message){
 //retrieve most recent x messages
 Data.prototype.retrieve = function(paramsHash){
   //paramsHash: limit (default to most recent 100 among createdAt), username, search text
-
+  var limit = paramsHash.limit || 100;
+  var order = paramsHash.order || 'createdAt';
+  var len = this._storage.length;
+  var terminus = len > limit ? len - limit : 0;
+  if( order === 'createdAt' ){
+    return this._storage.slice(terminus);
+  }
 };
 
 var Message = function(username, text, room) {
