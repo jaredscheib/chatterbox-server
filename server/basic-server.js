@@ -1,7 +1,6 @@
 /* Import node's http module: */
 var http = require("http");
 var handler = require('./request-handler').handler;
-var database = require('./data').Data;
 
 //create database instance
 // var data = new database();
